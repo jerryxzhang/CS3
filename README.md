@@ -1,1 +1,1 @@
-# CS3
+# CS3 WebserverRequirements:* libboost-all-dev* libgtest-dev    * Run the following commands after installing    * cd /usr/src/gtest    * sudo cmake .    * sudo make    * sudo mv libg\* /usr/lib/Run make to compile, and make test to run the tests

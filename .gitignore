@@ -26,3 +26,5 @@
 *.exe
 *.out
 *.app
+bin/webserver
+bin/test/config_parser_test
