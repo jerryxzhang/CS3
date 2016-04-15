@@ -25,6 +25,8 @@ void write_handler(const boost::system::error_code &ec, std::size_t num_bytes) {
         cerr << "Error code " << ec.value() << endl;
         exit(1);
     }
+    tcp_socket.close();
+    tcp_acceptor.async_accept(tcp_socket, accept_handler);
 }
 
 void accept_handler(const boost::system::error_code &ec) {
