@@ -18,7 +18,10 @@ tcp::endpoint tcp_endpoint{tcp::v4(), 8000};
 tcp::acceptor tcp_acceptor{ioservice, tcp_endpoint};
 tcp::socket tcp_socket{ioservice};
 
-string content("<html><body>Hello, world!</body></html>");
+string content("HTTP/1.1 200 OK\r\n"
+               "Content-Type: text/html\r\n"
+               "\r\n"
+               "<html><body>Hello, world!</body></html>");
 
 void accept_handler(const boost::system::error_code &ec);
 void write_handler(const boost::system::error_code &ec, std::size_t num_bytes);
