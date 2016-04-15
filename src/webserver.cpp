@@ -46,6 +46,7 @@ void accept_handler(const boost::system::error_code &ec) {
 int main() {
     tcp_acceptor.listen();
     tcp_acceptor.async_accept(tcp_socket, accept_handler);
+    cout << "Server started, listening on port " << "8000" << endl;
     ioservice.run();
     return 0;
 }
