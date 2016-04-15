@@ -38,25 +38,6 @@ int getPort(const NginxConfig &config) {
   return -1;
 }
 
-void accept_handler(const boost::system::error_code &ec);
-void write_handler(const boost::system::error_code &ec, std::size_t num_bytes);
-
-void write_handler(const boost::system::error_code &ec, std::size_t num_bytes) {
-    if (ec) {
-        cerr << "Error code " << ec.value() << endl;
-        exit(1);
-    }
-    tcp_socket.close();
-    tcp_acceptor.async_accept(tcp_socket, accept_handler);
-}
-
-void accept_handler(const boost::system::error_code &ec) {
-    if (ec) {
-        cerr << "Error code " << ec.value() << endl;
-        exit(1);
-    }
-    async_write(tcp_socket, buffer(content), write_handler);
-}
 
 int main(int argc, char **argv) {
     /* Citation: these 14 lines courtesy of the provided sample solution */
@@ -74,6 +55,31 @@ int main(int argc, char **argv) {
         cerr << "Couldn't find a port in the config file." << endl;
         return -1;
     }
+
+    /* These two functions are mutually recursive, so we have to define them
+    before we use them. */
+    std::function<void (const boost::system::error_code)> accept_handler;
+    std::function<void (const boost::system::error_code, std::size_t)> write_handler;
+
+    /* Lambdas are perfect for this. The [&] captures by reference all
+    (three) local variables that are used in the lambda. */
+    accept_handler = [&] (const boost::system::error_code &ec) {
+        if (ec) {
+            cerr << "Error code " << ec.value() << endl;
+            exit(1);
+        }
+        cout << "Serving request...";
+        async_write(tcp_socket, buffer(content), write_handler);
+    };
+    write_handler = [&] (const boost::system::error_code &ec, std::size_t num_bytes) {
+        if (ec) {
+            cerr << "Error code " << ec.value() << endl;
+            exit(1);
+        }
+        cout << "request served. Now listening again." << endl;
+        tcp_socket.close();
+        tcp_acceptor.async_accept(tcp_socket, accept_handler);
+    };
 
     tcp_acceptor.listen();
     tcp_acceptor.async_accept(tcp_socket, accept_handler);
