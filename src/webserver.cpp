@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
                    "\r\n"
                    "<html><body>Hello, worlds!</body></html>");
 
-    /* These two functions are mutually recursive, so we have to define them
+    /* These two functions are mutually recursive, so we have to declare them
     before we use them. */
     std::function<void (const boost::system::error_code)> accept_handler;
     std::function<void (const boost::system::error_code, std::size_t)> write_handler;
