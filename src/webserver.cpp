@@ -14,14 +14,15 @@ using namespace boost::asio::ip;
 using namespace boost::system;
 
 io_service ioservice;
-tcp::endpoint tcp_endpoint{tcp::v4(), 8000};
+tcp::endpoint tcp_endpoint{tcp::v4(), 12345};
 tcp::acceptor tcp_acceptor{ioservice, tcp_endpoint};
 tcp::socket tcp_socket{ioservice};
 
 string content("HTTP/1.1 200 OK\r\n"
                "Content-Type: text/html\r\n"
+               "Content-Length: 40\r\n"
                "\r\n"
-               "<html><body>Hello, world!</body></html>");
+               "<html><body>Hello, worlds!</body></html>");
 
 /* Citation: this function courtesy of the provided sample solution */
 int getPort(const NginxConfig &config) {
