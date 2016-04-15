@@ -13,17 +13,6 @@ using namespace boost::asio;
 using namespace boost::asio::ip;
 using namespace boost::system;
 
-io_service ioservice;
-tcp::endpoint tcp_endpoint{tcp::v4(), 12345};
-tcp::acceptor tcp_acceptor{ioservice, tcp_endpoint};
-tcp::socket tcp_socket{ioservice};
-
-string content("HTTP/1.1 200 OK\r\n"
-               "Content-Type: text/html\r\n"
-               "Content-Length: 40\r\n"
-               "\r\n"
-               "<html><body>Hello, worlds!</body></html>");
-
 /* Citation: this function courtesy of the provided sample solution */
 int getPort(const NginxConfig &config) {
   for (const auto& statement : config.statements_) {
@@ -55,6 +44,17 @@ int main(int argc, char **argv) {
         cerr << "Couldn't find a port in the config file." << endl;
         return -1;
     }
+
+    io_service ioservice;
+    tcp::endpoint tcp_endpoint{tcp::v4(), 12345};
+    tcp::acceptor tcp_acceptor{ioservice, tcp_endpoint};
+    tcp::socket tcp_socket{ioservice};
+
+    string content("HTTP/1.1 200 OK\r\n"
+                   "Content-Type: text/html\r\n"
+                   "Content-Length: 40\r\n"
+                   "\r\n"
+                   "<html><body>Hello, worlds!</body></html>");
 
     /* These two functions are mutually recursive, so we have to define them
     before we use them. */
