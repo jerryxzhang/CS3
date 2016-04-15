@@ -39,14 +39,14 @@ int main(int argc, char **argv) {
     if (!config_parser.Parse(argv[1], &config)) {
         return -1;
     }
-    int port = getPort(config);
+    unsigned short port = getPort(config);
     if (port < 1) {
         cerr << "Couldn't find a port in the config file." << endl;
         return -1;
     }
 
     io_service ioservice;
-    tcp::endpoint tcp_endpoint{tcp::v4(), 12345};
+    tcp::endpoint tcp_endpoint{tcp::v4(), port};
     tcp::acceptor tcp_acceptor{ioservice, tcp_endpoint};
     tcp::socket tcp_socket{ioservice};
 
