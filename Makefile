@@ -22,7 +22,7 @@ test: $(BINTEST)config_parser_test
 	$(BINTEST)config_parser_test
 
 $(BIN)%:  $(SOURCE)%.cpp
-	$(CC) $< $(CFLAGS) -o $@ $(LIBS) $(INC)
+	$(CC) $< $(SOURCEFILES) $(CFLAGS) -o $@ $(LIBS) $(INC)
 
 $(BINTEST)%:  $(TEST)%.cpp
 	$(CC) $< $(SOURCEFILES) -lgtest -pthread /usr/src/gtest/src/gtest_main.cc $(CFLAGS) -o $@ $(LIBS) $(INC)
