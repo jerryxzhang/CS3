@@ -20,6 +20,9 @@ tcp::socket tcp_socket{ioservice};
 
 string content("<html><body>Hello, world!</body></html>");
 
+void accept_handler(const boost::system::error_code &ec);
+void write_handler(const boost::system::error_code &ec, std::size_t num_bytes);
+
 void write_handler(const boost::system::error_code &ec, std::size_t num_bytes) {
     if (ec) {
         cerr << "Error code " << ec.value() << endl;
